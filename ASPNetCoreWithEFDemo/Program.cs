@@ -1,15 +1,30 @@
+using ASPNetCoreWithEFDemo.Models;
+using ASPNetCoreWithEFDemo.Services;
+using Microsoft.EntityFrameworkCore;
+
 namespace ASPNetCoreWithEFDemo
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            
+            // Add Entity Framework
+            builder.Services.AddDbContext<LibraryContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
+
+            // Seed data
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<LibraryContext>();
+                await DataSeeder.SeedDataAsync(context);
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -30,7 +45,7 @@ namespace ASPNetCoreWithEFDemo
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
-            app.Run();
+            await app.RunAsync();
         }
     }
 }

@@ -1,0 +1,141 @@
+@model IEnumerable<ASPNetCoreWithEFDemo.Models.DTOs.BookDto>
+
+@{
+    ViewData["Title"] = "Books - EF Core 9 Features Demo";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2>Books Library - Entity Framework Core 9 Features</h2>
+            <p class="text-muted">Demonstrating: <strong>Joins</strong>, <strong>AsNoTracking</strong>, <strong>Split Query</strong></p>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add New Book
+            </a>
+            <a asp-action="Statistics" class="btn btn-info">
+                <i class="fas fa-chart-bar"></i> View Statistics
+            </a>
+        </div>
+    </div>
+
+    <!-- Search Form -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Search Books (Complex Joins Demo)</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="Search" method="get">
+                <div class="row">
+                    <div class="col-md-4">
+                        <input type="text" name="title" class="form-control" placeholder="Search by title..." value="@ViewBag.Title" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" name="authorName" class="form-control" placeholder="Search by author..." value="@ViewBag.AuthorName" />
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" name="categoryName" class="form-control" placeholder="Search by category..." value="@ViewBag.CategoryName" />
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-secondary">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Books Table -->
+    <div class="card">
+        <div class="card-header">
+            <h5>Books List (@Model.Count() books found)</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>ISBN</th>
+                                <th>Price</th>
+                                <th>Published Date</th>
+                                <th>Categories</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var book in Model)
+                            {
+                                <tr>
+                                    <td><strong>@book.Title</strong></td>
+                                    <td>@book.AuthorName</td>
+                                    <td><code>@book.ISBN</code></td>
+                                    <td>$@book.Price.ToString("F2")</td>
+                                    <td>@book.PublishedDate.ToString("MMM dd, yyyy")</td>
+                                    <td>
+                                        @foreach (var category in book.Categories)
+                                        {
+                                            <span class="badge bg-secondary me-1">@category</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Details" asp-route-id="@book.Id" class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i> View
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@book.Id" class="btn btn-sm btn-outline-warning">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@book.Id" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No books found. <a asp-action="Create">Add the first book</a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- EF Core Features Info -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5>EF Core 9 Features Demonstrated</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <h6><i class="fas fa-link text-primary"></i> Joins</h6>
+                    <p class="small">Books joined with Authors and Categories through navigation properties and Include().</p>
+                </div>
+                <div class="col-md-3">
+                    <h6><i class="fas fa-tachometer-alt text-success"></i> AsNoTracking</h6>
+                    <p class="small">Read-only queries with AsNoTracking() for better performance.</p>
+                </div>
+                <div class="col-md-3">
+                    <h6><i class="fas fa-cut text-warning"></i> Split Query</h6>
+                    <p class="small">AsSplitQuery() splits complex includes into separate SQL queries.</p>
+                </div>
+                <div class="col-md-3">
+                    <h6><i class="fas fa-search text-info"></i> SingleOrDefault</h6>
+                    <p class="small">Safe single record retrieval with proper null handling.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

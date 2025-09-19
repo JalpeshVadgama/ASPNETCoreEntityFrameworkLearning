@@ -1,0 +1,104 @@
+@model ASPNetCoreWithEFDemo.Models.DTOs.BookDto
+
+@{
+    ViewData["Title"] = "Delete Book - " + Model.Title;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Index">Books</a></li>
+                    <li class="breadcrumb-item active">Delete Book</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Confirm Delete</h4>
+                    <p class="mb-0">Demonstrating: <strong>Delete with Related Entities</strong>, <strong>SingleOrDefaultAsync</strong></p>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-warning"></i> <strong>Warning:</strong> This action cannot be undone. The book and all its category associations will be permanently deleted.
+                    </div>
+
+                    <h5>Are you sure you want to delete this book?</h5>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Title:</dt>
+                                <dd class="col-sm-8"><strong>@Model.Title</strong></dd>
+
+                                <dt class="col-sm-4">Author:</dt>
+                                <dd class="col-sm-8">@Model.AuthorName</dd>
+
+                                <dt class="col-sm-4">ISBN:</dt>
+                                <dd class="col-sm-8"><code>@Model.ISBN</code></dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Price:</dt>
+                                <dd class="col-sm-8">$@Model.Price.ToString("F2")</dd>
+
+                                <dt class="col-sm-4">Published:</dt>
+                                <dd class="col-sm-8">@Model.PublishedDate.ToString("MMMM dd, yyyy")</dd>
+
+                                <dt class="col-sm-4">Categories:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.Categories.Any())
+                                    {
+                                        @foreach (var category in Model.Categories)
+                                        {
+                                            <span class="badge bg-secondary me-1">@category</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No categories</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Cancel
+                        </a>
+                        
+                        <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you absolutely sure you want to delete this book?')">
+                                <i class="fas fa-trash"></i> Delete Book
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6>EF Core Features in Delete Operation</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success"></i> <strong>SingleOrDefaultAsync()</strong> - Find book to delete</li>
+                        <li><i class="fas fa-check text-success"></i> <strong>Include()</strong> - Load related BookCategories</li>
+                        <li><i class="fas fa-check text-success"></i> <strong>RemoveRange()</strong> - Delete related entities first</li>
+                        <li><i class="fas fa-check text-success"></i> <strong>Cascade Operations</strong> - Proper deletion order</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

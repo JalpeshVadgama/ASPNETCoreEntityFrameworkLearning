@@ -1,8 +1,96 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Entity Framework Core 9 Features Demo";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    <div class="text-center mb-5">
+        <h1 class="display-4"><i class="fas fa-database text-primary"></i> Entity Framework Core 9</h1>
+        <p class="lead">Comprehensive demonstration of EF Core 9 features through a Books Library application</p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-star"></i> Featured EF Core 9 Features</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="feature-item mb-4">
+                                <h5><i class="fas fa-link text-primary"></i> Joins</h5>
+                                <p>Complex relationships between Books, Authors, and Categories with Include() and ThenInclude().</p>
+                            </div>
+                            <div class="feature-item mb-4">
+                                <h5><i class="fas fa-tachometer-alt text-success"></i> AsNoTracking</h5>
+                                <p>Optimized read-only queries that don't track entities in the change tracker.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="feature-item mb-4">
+                                <h5><i class="fas fa-cut text-warning"></i> Split Query</h5>
+                                <p>AsSplitQuery() splits complex queries with multiple includes for better performance.</p>
+                            </div>
+                            <div class="feature-item mb-4">
+                                <h5><i class="fas fa-search text-info"></i> SingleOrDefault / FirstOrDefault</h5>
+                                <p>Safe single record retrieval methods with proper null handling and error management.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-book fa-3x text-primary mb-3"></i>
+                    <h5>Books Management</h5>
+                    <p>Full CRUD operations with complex relationships and EF Core 9 features.</p>
+                    <a asp-controller="Books" asp-action="Index" class="btn btn-primary">
+                        <i class="fas fa-arrow-right"></i> Explore Books
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-3x text-success mb-3"></i>
+                    <h5>Authors & Categories</h5>
+                    <p>Manage authors and categories that demonstrate entity relationships.</p>
+                    <a asp-controller="Authors" asp-action="Index" class="btn btn-success">
+                        <i class="fas fa-arrow-right"></i> Manage Authors
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-bar fa-3x text-info mb-3"></i>
+                    <h5>Statistics & Analytics</h5>
+                    <p>Complex aggregations and joins demonstrating advanced EF Core queries.</p>
+                    <a asp-controller="Books" asp-action="Statistics" class="btn btn-info">
+                        <i class="fas fa-arrow-right"></i> View Statistics
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <h5><i class="fas fa-info-circle"></i> About This Demo</h5>
+                <p class="mb-0">
+                    This application demonstrates Entity Framework Core 9 features through a practical Books Library system. 
+                    Each page showcases specific EF Core capabilities with real-world examples and detailed explanations of the features being used.
+                    The database is automatically created and seeded with sample data when you first run the application.
+                </p>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EF Core 9 Features Demo</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        button { margin: 5px; padding: 10px; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+        .result { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Entity Framework Core 9 Features Demo</h1>
+    
+    <div class="section">
+        <h2>Books API - Demonstrating EF Core 9 Features</h2>
+        <p>This demo showcases:</p>
+        <ul>
+            <li><strong>Joins</strong> - Complex relationships between Books, Authors, and Categories</li>
+            <li><strong>AsNoTracking</strong> - Optimized read-only queries</li>
+            <li><strong>Split Query</strong> - Better performance for multiple includes</li>
+            <li><strong>SingleOrDefault/FirstOrDefault</strong> - Safe single record retrieval</li>
+        </ul>
+        
+        <button onclick="getAllBooks()">Get All Books (Joins + AsNoTracking + Split Query)</button>
+        <button onclick="getBookById()">Get Book by ID (SingleOrDefault)</button>
+        <button onclick="getFirstBookByAuthor()">Get First Book by Author (FirstOrDefault)</button>
+        <button onclick="searchBooks()">Search Books (Complex Joins)</button>
+        <button onclick="getStatistics()">Get Statistics (Aggregations)</button>
+        <button onclick="createBook()">Create Book (CRUD)</button>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        const baseUrl = '/api';
+        
+        function displayResult(data) {
+            document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        }
+        
+        function displayError(error) {
+            document.getElementById('result').innerHTML = '<pre style="color: red;">Error: ' + error + '</pre>';
+        }
+        
+        async function getAllBooks() {
+            try {
+                const response = await fetch(`${baseUrl}/books`);
+                const data = await response.json();
+                displayResult(data);
+            } catch (error) {
+                displayError(error.message);
+            }
+        }
+        
+        async function getBookById() {
+            try {
+                const response = await fetch(`${baseUrl}/books/1`);
+                const data = await response.json();
+                displayResult(data);
+            } catch (error) {
+                displayError(error.message);
+            }
+        }
+        
+        async function getFirstBookByAuthor() {
+            try {
+                const response = await fetch(`${baseUrl}/books/by-author/1`);
+                const data = await response.json();
+                displayResult(data);
+            } catch (error) {
+                displayError(error.message);
+            }
+        }
+        
+        async function searchBooks() {
+            try {
+                const response = await fetch(`${baseUrl}/books/search?title=Harry&authorName=Rowling`);
+                const data = await response.json();
+                displayResult(data);
+            } catch (error) {
+                displayError(error.message);
+            }
+        }
+        
+        async function getStatistics() {
+            try {
+                const response = await fetch(`${baseUrl}/books/statistics`);
+                const data = await response.json();
+                displayResult(data);
+            } catch (error) {
+                displayError(error.message);
+            }
+        }
+        
+        async function createBook() {
+            try {
+                const newBook = {
+                    title: "Test Book",
+                    isbn: "978-1234567890",
+                    price: 19.99,
+                    publishedDate: "2024-01-01T00:00:00Z",
+                    authorId: 1,
+                    categoryIds: [1, 2]
+                };
+                
+                const response = await fetch(`${baseUrl}/books`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newBook)
+                });
+                
+                const data = await response.json();
+                displayResult(data);
+            } catch (error) {
+                displayError(error.message);
+            }
+        }
+    </script>
+</body>
+</html>

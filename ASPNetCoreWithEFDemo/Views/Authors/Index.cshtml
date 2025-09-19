@@ -1,0 +1,63 @@
+@model IEnumerable<ASPNetCoreWithEFDemo.Models.Author>
+
+@{
+    ViewData["Title"] = "Authors";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2>Authors</h2>
+            <p class="text-muted">Manage book authors</p>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add New Author
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Created Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var author in Model)
+                            {
+                                <tr>
+                                    <td><strong>@author.Name</strong></td>
+                                    <td>@author.Email</td>
+                                    <td>@author.CreatedDate.ToString("MMM dd, yyyy")</td>
+                                    <td>
+                                        <a asp-controller="Books" asp-action="FirstByAuthor" asp-route-authorId="@author.Id" class="btn btn-sm btn-outline-info">
+                                            <i class="fas fa-book"></i> View Books
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No authors found. <a asp-action="Create">Add the first author</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

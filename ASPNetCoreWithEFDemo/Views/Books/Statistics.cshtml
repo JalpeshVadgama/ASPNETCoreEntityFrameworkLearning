@@ -1,0 +1,142 @@
+@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Book Statistics";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Index">Books</a></li>
+                    <li class="breadcrumb-item active">Statistics</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fas fa-chart-bar"></i> Book Statistics by Author</h4>
+                    <p class="text-muted mb-0">Demonstrating: <strong>Complex Joins</strong>, <strong>Aggregations</strong>, <strong>GroupBy</strong>, <strong>AsNoTracking</strong></p>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th><i class="fas fa-user"></i> Author Name</th>
+                                        <th><i class="fas fa-book"></i> Total Books</th>
+                                        <th><i class="fas fa-dollar-sign"></i> Average Price</th>
+                                        <th><i class="fas fa-tags"></i> Unique Categories</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var stat in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <strong>@stat.AuthorName</strong>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-primary">@stat.BookCount</span>
+                                            </td>
+                                            <td>
+                                                <span class="text-success">$@(((decimal)stat.AveragePrice).ToString("F2"))</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">@stat.TotalCategories</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-3">
+                                <div class="card bg-primary text-white">
+                                    <div class="card-body text-center">
+                                        <h3>@Model.Sum(s => (int)s.BookCount)</h3>
+                                        <p class="mb-0">Total Books</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-success text-white">
+                                    <div class="card-body text-center">
+                                        <h3>@Model.Count()</h3>
+                                        <p class="mb-0">Authors</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-info text-white">
+                                    <div class="card-body text-center">
+                                        <h3>$@(Model.Average(s => (decimal)s.AveragePrice).ToString("F2"))</h3>
+                                        <p class="mb-0">Overall Avg Price</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-warning text-white">
+                                    <div class="card-body text-center">
+                                        <h3>@Model.Sum(s => (int)s.TotalCategories)</h3>
+                                        <p class="mb-0">Category Associations</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> No statistics available. <a asp-action="Index">Add some books</a> to see statistics.
+                        </div>
+                    }
+
+                    <div class="mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Books
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>EF Core Features in Statistics Query</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6><i class="fas fa-link text-primary"></i> Complex Joins</h6>
+                            <p class="small">Books → Authors → BookCategories → Categories with multiple Include() statements.</p>
+                        </div>
+                        <div class="col-md-3">
+                            <h6><i class="fas fa-layer-group text-success"></i> GroupBy</h6>
+                            <p class="small">Grouping books by author name for aggregated statistics.</p>
+                        </div>
+                        <div class="col-md-3">
+                            <h6><i class="fas fa-calculator text-warning"></i> Aggregations</h6>
+                            <p class="small">Count(), Average(), and complex SelectMany() operations.</p>
+                        </div>
+                        <div class="col-md-3">
+                            <h6><i class="fas fa-cut text-info"></i> Split Query</h6>
+                            <p class="small">AsSplitQuery() for optimal performance with multiple includes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

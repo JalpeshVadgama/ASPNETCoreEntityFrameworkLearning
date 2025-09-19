@@ -1,0 +1,108 @@
+@model ASPNetCoreWithEFDemo.Models.DTOs.BookDto
+
+@{
+    ViewData["Title"] = "Book Details - " + Model.Title;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Index">Books</a></li>
+                    <li class="breadcrumb-item active">@Model.Title</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fas fa-book"></i> @Model.Title</h4>
+                    <p class="text-muted mb-0">Demonstrating: <strong>SingleOrDefault</strong>, <strong>AsNoTracking</strong>, <strong>Joins</strong></p>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Title:</dt>
+                                <dd class="col-sm-8">@Model.Title</dd>
+
+                                <dt class="col-sm-4">Author:</dt>
+                                <dd class="col-sm-8">
+                                    <i class="fas fa-user"></i> @Model.AuthorName
+                                </dd>
+
+                                <dt class="col-sm-4">ISBN:</dt>
+                                <dd class="col-sm-8"><code>@Model.ISBN</code></dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">Price:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="h5 text-success">$@Model.Price.ToString("F2")</span>
+                                </dd>
+
+                                <dt class="col-sm-4">Published:</dt>
+                                <dd class="col-sm-8">@Model.PublishedDate.ToString("MMMM dd, yyyy")</dd>
+
+                                <dt class="col-sm-4">Categories:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.Categories.Any())
+                                    {
+                                        @foreach (var category in Model.Categories)
+                                        {
+                                            <span class="badge bg-primary me-1">@category</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">No categories assigned</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                            <i class="fas fa-edit"></i> Edit Book
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Delete Book
+                        </a>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6>EF Core Features Used</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success"></i> <strong>SingleOrDefaultAsync()</strong> - Safe single record retrieval</li>
+                        <li><i class="fas fa-check text-success"></i> <strong>AsNoTracking()</strong> - Read-only query optimization</li>
+                        <li><i class="fas fa-check text-success"></i> <strong>Include() & ThenInclude()</strong> - Eager loading with joins</li>
+                        <li><i class="fas fa-check text-success"></i> <strong>Select() projection</strong> - DTO mapping</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
