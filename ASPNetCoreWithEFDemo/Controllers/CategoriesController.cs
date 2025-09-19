@@ -18,6 +18,7 @@ namespace ASPNetCoreWithEFDemo.Controllers
         {
             var categories = await _context.Categories
                 .AsNoTracking()
+                
                 .ToListAsync();
             return View(categories);
         }

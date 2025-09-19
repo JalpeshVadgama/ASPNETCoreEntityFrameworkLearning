@@ -97,6 +97,6 @@ namespace LinqOperatorDemo
         //    PartitioningOperators.DemonstrateTake();
         //    PartitioningOperators.DemonstrateTakeWhile();
 
-        //}
+        }
     }
 }
